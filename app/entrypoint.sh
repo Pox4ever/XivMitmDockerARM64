@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Clean up old iptables-legacy rules
+# Clean up old iptables-nft rules
 /app/cleanup.sh
 
 DEVICE_NAME=$(ip route get 8.8.8.8 | awk -- '{printf $5}')
@@ -9,7 +9,7 @@ DEVICE_NAME=$(ip route get 8.8.8.8 | awk -- '{printf $5}')
 if [ -z ${LOCAL+x} ] || [ "$LOCAL" = "true" ]; then
     for i in $(ip addr show $DEVICE_NAME | grep "inet\b" | awk '{print $2}'); do
         while IFS="" read -r SERVER_IP || [ -n "$SERVER_IP" ]; do
-            iptables-legacy -t nat -A POSTROUTING -s $i -d $SERVER_IP -o $DEVICE_NAME -j MASQUERADE
+            iptables-nft -t nat -A POSTROUTING -s $i -d $SERVER_IP -o $DEVICE_NAME -j MASQUERADE
         done < server-list.txt
     done
 else
@@ -27,10 +27,10 @@ else
             VPN_SUBNET=$(ip addr show ${!var} | grep "inet\b" | awk '{print $2}')
             
             while IFS="" read -r SERVER_IP || [ -n "$SERVER_IP" ]; do
-                iptables-legacy -t nat -A POSTROUTING -s $VPN_SUBNET -d $SERVER_IP -o $DEVICE_NAME -j MASQUERADE
+                iptables-nft -t nat -A POSTROUTING -s $VPN_SUBNET -d $SERVER_IP -o $DEVICE_NAME -j MASQUERADE
             done < server-list.txt
-            iptables-legacy -A FORWARD -i $DEVICE_NAME -o ${!var} -m state --state RELATED,ESTABLISHED -j ACCEPT
-            iptables-legacy -A FORWARD -i ${!var} -o $DEVICE_NAME -j ACCEPT
+            iptables-nft -A FORWARD -i $DEVICE_NAME -o ${!var} -m state --state RELATED,ESTABLISHED -j ACCEPT
+            iptables-nft -A FORWARD -i ${!var} -o $DEVICE_NAME -j ACCEPT
         done
     fi
 fi
