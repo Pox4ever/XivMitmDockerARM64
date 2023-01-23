@@ -1596,12 +1596,12 @@ def __main__() -> int:
         with open(cleanup_filename, "w") as fp:
             fp.write("#!/bin/sh\n")
             for rule in load_rules(port, definitions):
-                iptables_cmd = f"iptables-nft -t nat -I PREROUTING {rule}"
+                iptables_cmd = f"iptables-legacy -t nat -I PREROUTING {rule}"
                 logging.info(f"Running: {iptables_cmd}")
                 if os.system(iptables_cmd):
                     raise RootRequiredError
                 applied_rules.append(rule)
-                fp.write(f"iptables-nft -t nat -D PREROUTING {rule}\n")
+                fp.write(f"iptables-legacy -t nat -D PREROUTING {rule}\n")
         os.chmod(cleanup_filename, 0o777)
 
         os.system("sysctl -w net.ipv4.ip_forward=1")
@@ -1655,7 +1655,7 @@ def __main__() -> int:
         if not is_child:
             logging.info("Cleaning up...")
             for rule in applied_rules:
-                iptables_cmd = f"iptables-nft -t nat -D PREROUTING {rule}"
+                iptables_cmd = f"iptables-legacy -t nat -D PREROUTING {rule}"
                 logging.info(f"Running: {iptables_cmd}")
                 exit_code = os.system(iptables_cmd)
                 if exit_code:
