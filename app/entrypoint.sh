@@ -38,7 +38,7 @@ fi
 # Running mitigate.py
 if [ -z ${MITIGATOR+x} ] || [ "$MITIGATOR" = "true" ]; then
     # curl https://raw.githubusercontent.com/Soreepeong/XivMitmLatencyMitigator/main/mitigate.py | exec python3 - -u -m &
-    curl https://raw.githubusercontent.com/xzn/XivMitmLatencyMitigator/472533cceaf6b7cccb389ddb931163cfde952ee2/mitigate.py | exec python3 - -u -m &
+    curl https://raw.githubusercontent.com/Pox4ever/XivMitmDockerARM64/main/app/mitigation.py | exec python3 - -u -m &
 else
     if [ "$MITIGATOR" = "false" ]; then
         echo "XivMitmLatencyMitigator is disabled."
