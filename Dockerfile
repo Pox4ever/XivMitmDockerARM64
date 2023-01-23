@@ -8,5 +8,5 @@ RUN apt-get update && \
 ADD /app/* /app/
 
 RUN chmod +x *.sh
-
+RUN update-alternatives --set iptables /usr/sbin/iptables-legacy
 ENTRYPOINT ["bash", "/app/entrypoint.sh"]

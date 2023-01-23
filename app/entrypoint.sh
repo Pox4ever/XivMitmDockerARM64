@@ -5,7 +5,6 @@
 
 DEVICE_NAME=$(ip route get 8.8.8.8 | awk -- '{printf $5}')
 
-update-alternatives --set iptables /usr/sbin/iptables-legacy
 # Local Interface
 if [ -z ${LOCAL+x} ] || [ "$LOCAL" = "true" ]; then
     for i in $(ip addr show $DEVICE_NAME | grep "inet\b" | awk '{print $2}'); do
