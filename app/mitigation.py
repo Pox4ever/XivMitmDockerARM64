@@ -824,7 +824,7 @@ class OodleHelper:
         with open(cls.oodle_helper_path + ".cpp", "w") as fp:
             fp.write(OODLE_HELPER_CODE)
         if os.system(f"g++ {shlex.quote(cls.oodle_helper_path)}.cpp -o {shlex.quote(cls.oodle_helper_path)}"
-                     f" -std=c++20 -g -Og -m"):
+                     f" -std=c++20 -g -Og -m32"):
             os.unlink(cls.oodle_helper_path + ".cpp")
             raise RuntimeError("Failed to compile helper")
         os.unlink(cls.oodle_helper_path + ".cpp")
